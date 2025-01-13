@@ -143,7 +143,11 @@
     <form id="bot-form" action="/start-bot" method="post" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="userId" class="form-label">Admin User ID</label>
-        <input type="text" class="form-control" id="userId" aria-label="Default Admin User ID" value="" readonly>
+        <select class="form-select" id="userId" aria-label="Admin User ID">
+          <option value="12345">12345</option>
+          <option value="67890">67890</option>
+          <option value="11223">11223</option>
+        </select>
       </div>
       <div class="mb-3">
         <label for="botToken" class="form-label">Enter Your Bot Token :</label>
@@ -189,7 +193,6 @@
     }
   const profilePic = document.getElementById("profile-pic");
   const userName = document.getElementById("user-name");
-  const userIdInput = document.getElementById("userId");
   const emailField = document.getElementById("email");
   const emailError = document.getElementById("email-error");
   const loadingIndicator = document.getElementById("loading");
@@ -197,13 +200,11 @@
   const botTokenRegex = /^\d{10}:[\w\-]{35}$/;
   const botUsernameRegex = /^@[a-zA-Z0-9_]{5,32}Bot$/i;
 
-
   tg.requestFullscreen();
 
   if (userData) {
     userName.textContent = `Welcome, ${userData.first_name}`;
     profilePic.src = userData.photo_url || "";
-    userIdInput.value = userData.id;
     document.body.style.backgroundColor = tg.themeParams.bg_color || "#e7f5ff";
     document.documentElement.style.setProperty("--header-color", tg.themeParams.button_color || "#0088cc");
   }
@@ -245,10 +246,10 @@
       botToken,
       botUsername,
       email,
-      userId: userData.id,
+      userId: document.getElementById("userId").value,
       firstName: userData.first_name,
       userName: userData.userName,
-      };
+    };
 
     fetch("/start-bot", {
       method: "POST",
@@ -259,7 +260,7 @@
       // Hide loading spinner
       loadingIndicator.style.display = "none";
       if (response.ok) {
-        tg.showAlert(result.message || "Congrats ! Your Bot Is Now Live.", () => {
+        tg.showAlert(result.message || "Congrats! Your Bot Is Now Live.", () => {
           tg.openTelegramLink('https://t.me/Botsbazaarbot');
         });
       } else {
@@ -269,7 +270,7 @@
     .catch((error) => {
       loadingIndicator.style.display = "none";
       console.error("Error:", error);
-      tg.showAlert("An error occured. Please try again later.", () => {
+      tg.showAlert("An error occurred. Please try again later.", () => {
           tg.openTelegramLink('https://t.me/BoTsBazaAr/75');
         });
     });
@@ -279,4 +280,3 @@
   </script>
 </body>
 </html>
-
