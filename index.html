@@ -89,13 +89,6 @@
       outline: none;
     }
 
-    .error-message {
-      color: red;
-      font-size: 0.875rem;
-      margin-top: 5px;
-      display: none;
-    }
-
     footer {
       background-color: white;
       color: black;
@@ -130,13 +123,6 @@
 </head>
 
 <body>
-  <div id="unaccessible-message" style="display: none; margin: 30px auto; max-width: 500px; padding: 20px; border: 1px solid red; background-color: #ffe5e5; color: #d8000c; font-size: 18px; text-align: center; border-radius: 8px;"></div>
-  <div id="loading" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
-    <div class="spinner-border text-light" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p style="color:white; margin-left:10px;">Please wait...</p>
-  </div>  
   <div class="form-container">
     <img id="profile-pic" src="" alt="Profile Image">
     <h4 id="user-name" aria-label="Welcome message">Welcome, User</h4>
@@ -152,26 +138,51 @@
           <option value="Geography">Geography</option>
         </select>
       </div>
+
       <div class="mb-3">
-        <label for="botToken" class="form-label"> Class :</label>
-        <input type="text" class="form-control" id="botToken" placeholder="1-12" aria-describedby="bot-token-help" required>
+        <label for="classSelect" class="form-label">Class:</label>
+        <select class="form-select" id="classSelect" required>
+          <option value="">Select Class</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
       </div>
+
       <div class="mb-3">
-        <label for="botUsername" class="form-label"> Select Number of Questions :</label>
-        <input type="text" class="form-control" id="botUsername" placeholder="" aria-describedby="bot-username-help" required>
+        <label for="questionSelect" class="form-label">Select Number of Questions:</label>
+        <select class="form-select" id="questionSelect" required>
+          <option value="">Select Number</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+          <option value="40">40</option>
+          <option value="50">50</option>
+        </select>
       </div>
+
       <div class="mb-3">
-        <label for="email" class="form-label"> For Exams :</label>
-        <input type="email" class="form-control" id="email" placeholder="IIT-JEE , NEET etc" required>
-        <div class="error-message" id="email-error">Please enter a valid email address.</div>
+        <label for="email" class="form-label">For Exams:</label>
+        <input type="text" class="form-control" id="email" placeholder="IIT-JEE, NEET, etc" required>
       </div>
+
       <div class="form-check mb-3">
-        <input type="checkbox" class="form-check-input" id="termsCheck" required aria-label="I agree to the terms and conditions">
+        <input type="checkbox" class="form-check-input" id="termsCheck" required>
         <label for="termsCheck" class="form-check-label">
           I agree to the <a href="https://dev.botsbazaar.org/create/upi-bot/t&c" target="_blank">terms and conditions</a>
         </label>
       </div>
-      <button type="submit" class="btn w-100" aria-label="Start Bot">Start Bot</button>
+
+      <button type="submit" class="btn w-100">Start Bot</button>
     </form>
   </div>
 
@@ -182,104 +193,5 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-  const tg = window.Telegram.WebApp;
-  const userData = tg.initDataUnsafe?.user;
-
-  const picElement = document.getElementById("profile-pic");
-  const userElement = document.getElementById("user-name");
-  const formElement = document.getElementById("bot-form");
-  const errorElement = document.getElementById("unaccessible-message"); 
-
-  
-    }
-  const profilePic = document.getElementById("profile-pic");
-  const userName = document.getElementById("user-name");
-  const emailField = document.getElementById("email");
-  const emailError = document.getElementById("email-error");
-  const loadingIndicator = document.getElementById("loading");
-
-  const botTokenRegex = /^\d{10}:[\w\-]{35}$/;
-  const botUsernameRegex = /^@[a-zA-Z0-9_]{5,32}Bot$/i;
-
-  tg.requestFullscreen();
-
-  if (userData) {
-    userName.textContent = `Welcome, ${userData.first_name}`;
-    profilePic.src = userData.photo_url || "";
-    document.body.style.backgroundColor = tg.themeParams.bg_color || "#e7f5ff";
-    document.documentElement.style.setProperty("--header-color", tg.themeParams.button_color || "#0088cc");
-  }
-
-  document.getElementById("bot-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const botToken = document.getElementById("botToken").value.trim();
-    const botUsername = document.getElementById("botUsername").value.trim();
-    const email = emailField.value.trim();
-    const termsCheck = document.getElementById("termsCheck").checked;
-
-    if (!botToken.match(botTokenRegex)) {
-      alert("Invalid bot token format. Please check and enter again.");
-      return;
-    }
-
-    if (!botUsername.match(botUsernameRegex)) {
-      alert("Invalid bot username. Please check and enter again.");
-      return;
-    }
-
-    if (!emailField.checkValidity()) {
-      emailError.style.display = "block";
-      return;
-    } else {
-      emailError.style.display = "none";
-    }
-
-    if (!termsCheck) {
-      alert("You must accept the terms and conditions to proceed.");
-      return;
-    }
-
-    // Show loading spinner
-    loadingIndicator.style.display = "flex";
-
-    const data = {
-      botToken,
-      botUsername,
-      email,
-      userId: document.getElementById("userId").value,
-      firstName: userData.first_name,
-      userName: userData.userName,
-    };
-
-    fetch("/start-bot", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    .then((response) => response.json().then((result) => {
-      // Hide loading spinner
-      loadingIndicator.style.display = "none";
-      if (response.ok) {
-        tg.showAlert(result.message || "Congrats! Your Bot Is Now Live.", () => {
-          tg.openTelegramLink('https://t.me/Botsbazaarbot');
-        });
-      } else {
-        tg.showAlert(result.error || "An error occurred. Please try again later.");
-      }
-    }))
-    .catch((error) => {
-      loadingIndicator.style.display = "none";
-      console.error("Error:", error);
-      tg.showAlert("An error occurred. Please try again later.", () => {
-          tg.openTelegramLink('https://t.me/BoTsBazaAr/75');
-        });
-    });
-  });
-});
-
-  </script>
 </body>
 </html>
