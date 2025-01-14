@@ -17,8 +17,12 @@
   
   <style>
     :root {
-      --header-color: #0088cc;
-      --footer-color: #e7f5ff;
+      --header-color: #ff5722;
+      --footer-color: #fff8e1;
+      --button-hover-color: #e64a19;
+      --form-bg-color: #ffecb3;
+      --dropdown-hover-bg: #ffe082;
+      --dropdown-hover-text: #000;
     }
 
     body {
@@ -57,7 +61,7 @@
       width: 80%;
       max-width: 500px;
       padding: 20px;
-      background: white;
+      background: var(--form-bg-color);
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       animation: fadeIn 0.5s ease-in-out;
@@ -85,12 +89,21 @@
     }
 
     .form-container button:hover, .form-container button:focus {
-      background-color: #005b99;
+      background-color: var(--button-hover-color);
       outline: none;
     }
 
+    .form-select {
+      transition: all 0.3s ease;
+    }
+
+    .form-select:hover {
+      background-color: var(--dropdown-hover-bg);
+      color: var(--dropdown-hover-text);
+    }
+
     footer {
-      background-color: white;
+      background-color: var(--form-bg-color);
       color: black;
       text-align: center;
       padding: 15px 0;
@@ -101,7 +114,7 @@
     }
 
     footer a {
-      color: #ffc107;
+      color: var(--header-color);
       text-decoration: none;
     }
 
